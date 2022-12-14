@@ -50,8 +50,10 @@ def is_word_guessed(secret_word, letters_guessed):
       False otherwise
     '''
     # FILL IN YOUR CODE HERE...
-    pass
-
+    for c in secret_word:
+        if (c in letters_guessed) == False:
+            return False
+    return True
 
 ### Testcases
 # print(is_word_guessed('apple', ['a', 'e', 'i', 'k', 'p', 'r', 's']))
@@ -68,14 +70,19 @@ def get_guessed_word(secret_word, letters_guessed):
       what letters in secret_word have been guessed so far.
     '''
     # FILL IN YOUR CODE HERE...
-    pass
+    output = ""
+    for c in secret_word:
+        if (c in letters_guessed) == True:
+            output += c
+        else:
+            output += "_ "
+    return output
     
-    
-    
-      
 #Testcases
 # print(get_guessed_word('apple', ['e', 'i', 'k', 'p', 'r', 's']))
 # print(get_guessed_word('durian', ['a', 'c', 'd', 'h', 'i', 'm', 'n', 'r', 't', 'u']))
+# print(get_guessed_word ('grapefruit', ['k', 'm', 'b', 'j', 'e', 'w', 's', 'z', 'u', 'x']))
+# print(get_guessed_word ('coconut', ['w', 'l', 'i', 'p', 'c', 'u', 'j', 'h', 'v', 'z']))
 
 def get_available_letters(letters_guessed):
     '''
@@ -84,9 +91,10 @@ def get_available_letters(letters_guessed):
       yet been guessed.
     '''
     # FILL IN YOUR CODE HERE...   
-    pass
-
-
+    output = string.ascii_lowercase
+    for c in letters_guessed:
+        output = output.replace(c, "")
+    return output
 
 #Testcases 
 # print( get_available_letters(['e', 'i', 'k', 'p', 'r', 's']) )
@@ -112,9 +120,30 @@ def game_loop(secret_word):
     Follows the other limitations detailed in the problem write-up.
     '''
     # FILL IN YOUR CODE HERE...
-    pass
+    print ("Let the game begin!")
+    print ("?????", len(secret_word))
+    guess_remain = 8
+    letter_guessed = []
+    while is_word_guessed(secret_word, letter_guessed) == False and guess_remain > 0:
+        print("You have", guess_remain)
+        remain_letter = get_available_letters(letter_guessed)
+        print("Letter available", remain_letter)
 
-
+        c = input("Guess a letter:").lower()
+        if (c in remain_letter):
+            letter_guessed.append(c)
+            if (c in secret_word):
+                print("Correct:", get_guessed_word(secret_word, letter_guessed))
+            else:
+                print("Incorrect:", get_guessed_word(secret_word, letter_guessed))
+                guess_remain -= 1
+        else:
+            print("You fool", get_guessed_word(secret_word, letter_guessed))
+    
+    if (is_word_guessed(secret_word, letter_guessed)):
+        print ("You WIN")
+    else :
+        print("GAME OVER")
 
 
 def main():
